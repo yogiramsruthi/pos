@@ -3,6 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { env } from './config/env.js';
+import { apiLimiter } from './middleware/rateLimit.js';
 import { authRouter } from './routes/auth.js';
 import { billingRouter } from './routes/billing.js';
 import { cashRouter } from './routes/cash.js';
@@ -20,6 +21,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan('combined'));
+app.use('/api', apiLimiter);
 
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
